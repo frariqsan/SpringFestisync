@@ -9,6 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
+//NamedQuery realizado
+@NamedQuery(
+        name = "Categoria.findByName",
+        query = "SELECT c FROM Categoria c WHERE c.nombre = :name"
+)
 @Table(name = "categoria")
 public class Categoria {
     @Id

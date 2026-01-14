@@ -8,11 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
 
+
 public interface EntradaRepository extends JpaRepository<Entrada, Integer> {
 
     Page<Entrada> findByTipo(EntradaTipo tipo, Pageable pageable);
 
     //FINDBYPRICE
-    Page<Entrada> findByPrecioLessTh(double precioMax, Pageable pageable);
+    Page<Entrada> findByPrecioLessThanEqual(BigDecimal precioMax, Pageable pageable);
 
 }

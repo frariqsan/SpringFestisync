@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/eventos")
+@RequestMapping("/evento")
 public class EventoController {
     private final EventoService eventoService;
     private final ArtistaRepository artistaRepository;

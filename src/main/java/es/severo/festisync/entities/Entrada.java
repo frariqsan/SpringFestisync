@@ -21,7 +21,7 @@ public class Entrada {
     @Column(name = "tipo", nullable = false)
     private EntradaTipo tipo;
     @Column(name = "precio", nullable = false)
-    private double precio;
+    private BigDecimal precio;
     @ManyToOne
     @JoinColumn(name = "id_evento", nullable = false)
     private Evento evento;

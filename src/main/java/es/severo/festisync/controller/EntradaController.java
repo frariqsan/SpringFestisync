@@ -8,8 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 
+@RestController
+@RequestMapping("/entrada")
 public class EntradaController {
     private final EntradaService entradaService;
 
@@ -21,29 +26,29 @@ public class EntradaController {
         Page<EntradaDTO> p = entradaService.findAll(pageable)
                 .map(x -> new EntradaDTO(
                         x.getId(),
-                        x.getTipo(),
+                        x.getTipo().name(),
                         x.getPrecio()
                 ));
         return ResponseEntity.ok(p);
     }
-    @GetMapping("/BuscarTipo")
+    @GetMapping("/buscar-tipo")
     public ResponseEntity<Page<EntradaDTO>> findByType(EntradaTipo tipo, Pageable pageable) {
         Page<Entrada> entradaPage = entradaService.findByType(tipo, pageable);
         Page<EntradaDTO> dtoPage = entradaPage.map(x -> new EntradaDTO(
                 x.getId(),
-                x.getTipo(),
+                x.getTipo().name(),
                 x.getPrecio()
         ));
         return ResponseEntity.ok(dtoPage);
     }
 
     @GetMapping("/filtro-precio")
-    public ResponseEntity<Page<EntradaDTO>> getByPrecioMax(double precioMax, Pageable pageable)
+    public ResponseEntity<Page<EntradaDTO>> getByPrecioMax(BigDecimal precioMax, Pageable pageable)
      {
-         Page<Entrada> entradas = entradaService.findByPrecioLessTh(precioMax, pageable);
+         Page<Entrada> entradas = entradaService.findByPrecioLessThanEqual(precioMax, pageable);
          Page<EntradaDTO> dtoPage = entradas.map(x -> new EntradaDTO(
                  x.getId(),
-                 x.getTipo(),
+                 x.getTipo().name(),
                  x.getPrecio()
          ));
          return ResponseEntity.ok(dtoPage);

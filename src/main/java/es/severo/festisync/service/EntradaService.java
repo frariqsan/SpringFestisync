@@ -25,8 +25,8 @@ public class EntradaService {
         return entradaRepository.findByTipo(tipo, pageable);
     }
 
-    public Page<Entrada> findByPrecioLessTh(double precioMax, Pageable pageable) {
-        return entradaRepository.findByPrecioLessTh(precioMax, pageable);
+    public Page<Entrada> findByPrecioLessThanEqual(BigDecimal precioMax, Pageable pageable) {
+        return entradaRepository.findByPrecioLessThanEqual(precioMax, pageable);
     }
 
     //CRUD

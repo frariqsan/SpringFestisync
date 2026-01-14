@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface ArtistaRepository extends JpaRepository<Artista, Integer> {
 
     //Busca artistas por nombre
-    @Query("SELECT a FROM Artista a WHERE a.nombre = :name")
+    @Query("SELECT a FROM Artista a WHERE a.nombre LIKE %:name%")
     Page<Artista> findByName(String name, Pageable pageable);
 
     @Query("SELECT a FROM Artista a JOIN a.eventos e WHERE e.id = :eventoId")
