@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface LugarRepository extends JpaRepository<Lugar, Integer> {
 
     Page<Lugar> findAllByOrderByAforoDesc(Pageable pageable);
-    @Query("SELECT a FROM Artista a WHERE a.nombre = :name")
+
+    @Query("SELECT l FROM Lugar l WHERE l.nombre LIKE %:name%")
     Page<Lugar> findByName(String name, Pageable pageable);
 }

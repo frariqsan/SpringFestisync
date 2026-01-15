@@ -3,6 +3,7 @@ package es.severo.festisync.controller;
 import es.severo.festisync.dto.ArtistaDTO;
 import es.severo.festisync.entities.Artista;
 import es.severo.festisync.service.ArtistaService;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class ArtistaController {
 
 
     @GetMapping
-    public ResponseEntity<Page<ArtistaDTO>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<ArtistaDTO>> findAll(@ParameterObject Pageable pageable) {
         Page<ArtistaDTO> p = artistaService.findAll(pageable)
                 .map(x -> new ArtistaDTO(
                         x.getId(),
@@ -34,7 +35,7 @@ public class ArtistaController {
     }
 
     @GetMapping("/nombre/{name}")
-    public ResponseEntity<Page<ArtistaDTO>> findByName(String name, Pageable pageable) {
+    public ResponseEntity<Page<ArtistaDTO>> findByName(@PathVariable(name = "name") String name, @ParameterObject Pageable pageable) {
         Page<ArtistaDTO> p = artistaService.findByName(name, pageable)
                 .map(x -> new ArtistaDTO(
                         x.getId(),
@@ -92,13 +93,17 @@ public class ArtistaController {
         return ResponseEntity.ok(dtoUpdated);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Integer id) {
-        Optional<Artista> artistaOptional = artistaService.findById(id);
-        if (artistaOptional.isPresent()) {
-            return ResponseEntity.ok(artistaOptional.get());
-        }
+    public ResponseEntity<ArtistaDTO> getById(@PathVariable Integer id) {
+        return artistaService.findById(id)
+                .map(a -> new ArtistaDTO(
+                        a.getId(),
+                        a.getNombre(),
+                        a.getGeneroMusical(),
+                        a.getPais()
+                ))
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
 
-        return ResponseEntity.notFound().build();
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {

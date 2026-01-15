@@ -3,10 +3,12 @@ package es.severo.festisync.controller;
 import es.severo.festisync.dto.ArtistaDTO;
 import es.severo.festisync.dto.CategoriaDTO;
 import es.severo.festisync.service.CategoriaService;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +21,7 @@ public class CategoriaController {
         this.categoriaService = categoriaService;
     }
     @GetMapping
-    public ResponseEntity<Page<CategoriaDTO>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<CategoriaDTO>> findAll(@ParameterObject Pageable pageable) {
         Page<CategoriaDTO> p = categoriaService.findAll(pageable)
                 .map(x -> new CategoriaDTO(
                         x.getId(),
@@ -29,7 +31,7 @@ public class CategoriaController {
     }
 
     @GetMapping("/nombre/{name}")
-    public ResponseEntity<Page<CategoriaDTO>> findByName(String name, Pageable pageable) {
+    public ResponseEntity<Page<CategoriaDTO>> findByName(@PathVariable(name = "name") String name, @ParameterObject Pageable pageable) {
         Page<CategoriaDTO> p = categoriaService.findByName(name, pageable)
                 .map(x -> new CategoriaDTO(
                         x.getId(),
